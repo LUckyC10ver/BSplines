@@ -624,6 +624,16 @@ public sealed class XBSTools1Data<TInterval, TOrder>
             return X.UpperBoundary;
         }
 
+        public int GetNumberOfIntervals()
+        {
+            return X.GetNumberOfIntervals();
+        }
+
+        public int GetOrder()
+        {
+            return X.GetOrder();
+        }
+
         public abstract double CalcWeightedNormOfBend(double weightsDirection = 1);
 
         public double CalcNormP(int p)
