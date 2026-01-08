@@ -340,6 +340,24 @@ namespace BSpline.Core
             return true;
         }
 
+        private static string ExtractKey(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                return string.Empty;
+            }
+
+            var equalsIndex = line.IndexOf('=');
+            if (equalsIndex <= 0)
+            {
+                return string.Empty;
+            }
+
+            var left = line.Substring(0, equalsIndex).Trim();
+            var dotIndex = left.LastIndexOf('.');
+            return dotIndex >= 0 ? left.Substring(dotIndex + 1).Trim() : left;
+        }
+
         public bool Save(TextWriter writer, string path, string varName)
         {
             if (writer == null)
@@ -602,7 +620,7 @@ namespace BSpline.Core
             return T[index + K / 2 - 1];
         }
 
-        internal enum Position
+        public enum Position
         {
             Ober,
             Mitte,

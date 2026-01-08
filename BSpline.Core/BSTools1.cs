@@ -663,6 +663,24 @@ public sealed class XBSTools1Data<TInterval, TOrder>
             return true;
         }
 
+        private static string ExtractKey(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                return string.Empty;
+            }
+
+            var equalsIndex = line.IndexOf('=');
+            if (equalsIndex <= 0)
+            {
+                return string.Empty;
+            }
+
+            var left = line.Substring(0, equalsIndex).Trim();
+            var dotIndex = left.LastIndexOf('.');
+            return dotIndex >= 0 ? left.Substring(dotIndex + 1).Trim() : left;
+        }
+
         public int Save(string filename, string splineName = "data", string comment = "non")
         {
             if (string.IsNullOrEmpty(filename))
@@ -1832,8 +1850,8 @@ public sealed class XBSTools1Data<TInterval, TOrder>
                 return (string.Empty, parts[0].Trim());
             }
 
-            var prefix = parts[^2].Trim();
-            var key = parts[^1].Trim();
+            var prefix = parts[parts.Length - 2].Trim();
+            var key = parts[parts.Length - 1].Trim();
             return (prefix, key);
         }
 
@@ -1844,22 +1862,23 @@ public sealed class XBSTools1Data<TInterval, TOrder>
                 return "{0:0.################}";
             }
 
-            if (format.Contains("{0", StringComparison.Ordinal))
+            if (format.IndexOf("{0") >= 0)
             {
                 return format;
             }
 
-            if (!format.StartsWith("%", StringComparison.Ordinal))
+            if (!format.StartsWith("%"))
             {
                 return $"{{0:{format}}}";
             }
 
-            var spec = format[^1];
+            var spec = format[format.Length - 1];
             var dotIndex = format.IndexOf('.');
             var precision = -1;
             if (dotIndex >= 0 && dotIndex + 1 < format.Length - 1)
             {
-                var span = format.AsSpan(dotIndex + 1, format.Length - dotIndex - 2);
+                var length = format.Length - dotIndex - 2;
+                var span = length > 0 ? format.Substring(dotIndex + 1, length) : string.Empty;
                 if (int.TryParse(span, out var parsed))
                 {
                     precision = parsed;
