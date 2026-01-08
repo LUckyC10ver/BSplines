@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <RootNamespace>BSpline.Test</RootNamespace>
+    <AssemblyName>BSpline.Test</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BSpline.Core\BSpline.Core.csproj" />
+  </ItemGroup>
+</Project>
