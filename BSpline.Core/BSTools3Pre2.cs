@@ -499,6 +499,16 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
 
         public void Evaluate(double[] x, int dim, double[] result)
         {
+            if (Weights.GetLength() == 0 || Wx.Length == 0 || WxState.Length == 0)
+            {
+                for (var i = 0; i < dim; i++)
+                {
+                    result[i] = 0.0;
+                }
+
+                return;
+            }
+
             switch (X.Order)
             {
                 case 0:
@@ -965,6 +975,11 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
 
         private double[] GetWX(int index)
         {
+            if (index < 0 || index >= WxState.Length || Wx.Length == 0)
+            {
+                return new double[Math.Max(1, X.Order)];
+            }
+
             if (WxState[index] != X.Order)
             {
                 BuildWX(index);
@@ -975,6 +990,11 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
 
         private double[] GetWeightsSlice(int ix, int iy, int iz)
         {
+            if (Weights.GetLength() == 0 || Z.Order <= 0)
+            {
+                return new double[Math.Max(1, Z.Order)];
+            }
+
             var buffer = new double[Z.Order];
             for (var i = 0; i < buffer.Length; i++)
             {
