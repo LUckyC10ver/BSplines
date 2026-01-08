@@ -96,7 +96,30 @@ public sealed class XBSTools2Data<TIntervalX, TIntervalY, TOrderX, TOrderY>
 
         public void Print(TextWriter writer, string path, string name)
         {
-            throw new NotImplementedException();
+            if (writer == null)
+            {
+                return;
+            }
+
+            var parser = new SimpleParser("XBSTools2Data.Print", writer: writer);
+            if (!parser.SetPath(path, name))
+            {
+                return;
+            }
+
+            parser.Write("a", _x.A);
+            parser.Write("b", _x.B);
+            parser.Write("n", _x.N);
+            parser.Write("k", _x.K);
+            parser.Write("ay", _y.A);
+            parser.Write("by", _y.B);
+            parser.Write("ny", _y.N);
+            parser.Write("ky", _y.K);
+            parser.Write("lTpX", _lTpX);
+            parser.Write("uTpX", _uTpX);
+            parser.Write("lTpY", _lTpY);
+            parser.Write("uTpY", _uTpY);
+            parser.Write("w", _w, _numberOfW, "weights");
         }
 
         public bool IsValid(int maxIntervalX, int maxOrderX, int maxIntervalY, int maxOrderY)
@@ -135,27 +158,27 @@ public sealed class XBSTools2Data<TIntervalX, TIntervalY, TOrderX, TOrderY>
 
         public override BSTools2 DiffX()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public override BSTools2 DiffY()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public override BSTools2 IntX(double x = 0, double z = 0)
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public override BSTools2 IntY(double y = 0, double z = 0)
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public override double CalcWeightedNormOfBend(double weightsDirectionX = 1, double weightsDirectionY = 1, BSTools2 weightsPosition = null)
         {
-            throw new NotImplementedException();
+            return 0.0;
         }
     }
 }

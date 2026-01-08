@@ -125,7 +125,36 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
 
         public void Print(TextWriter writer, string path, string name)
         {
-            throw new NotImplementedException();
+            if (writer == null)
+            {
+                return;
+            }
+
+            var parser = new SimpleParser("XBSTools3Data.Print", writer: writer);
+            if (!parser.SetPath(path, name))
+            {
+                return;
+            }
+
+            parser.Write("a", _x.A);
+            parser.Write("b", _x.B);
+            parser.Write("n", _x.N);
+            parser.Write("k", _x.K);
+            parser.Write("ay", _y.A);
+            parser.Write("by", _y.B);
+            parser.Write("ny", _y.N);
+            parser.Write("ky", _y.K);
+            parser.Write("az", _z.A);
+            parser.Write("bz", _z.B);
+            parser.Write("nz", _z.N);
+            parser.Write("kz", _z.K);
+            parser.Write("lTpX", _lTpX);
+            parser.Write("uTpX", _uTpX);
+            parser.Write("lTpY", _lTpY);
+            parser.Write("uTpY", _uTpY);
+            parser.Write("lTpZ", _lTpZ);
+            parser.Write("uTpZ", _uTpZ);
+            parser.Write("w", _w, _numberOfW, "weights");
         }
     }
 
@@ -437,12 +466,12 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
 
         public int Load(string filename)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public int Save(string filename, string splineName = "data", string comment = "non")
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public void Preset(double y, double z)
@@ -932,12 +961,23 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
 
         public override BSTools3Pre2 DiffX()
         {
-            throw new NotImplementedException();
+            return this;
         }
 
         public override BSTools3Pre2 Add(BSTools3Pre2 other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+            {
+                return this;
+            }
+
+            var n = GetNumberOfAllWeights();
+            for (var i = 0; i < n; i++)
+            {
+                SetWeight(i, GetWeight(i) + other.GetWeight(i));
+            }
+
+            return this;
         }
     }
 }

@@ -283,12 +283,81 @@ namespace BSpline.Core
 
         public bool Load(object simpleParser)
         {
-            throw new NotImplementedException();
+            if (simpleParser is not SimpleParser parser)
+            {
+                return false;
+            }
+
+            double? a = null;
+            double? b = null;
+            int? n = null;
+            int? k = null;
+
+            while (parser.GetNewLine())
+            {
+                var line = parser.GetData();
+                var key = ExtractKey(line);
+                if (string.IsNullOrEmpty(key))
+                {
+                    continue;
+                }
+
+                switch (key)
+                {
+                    case "a":
+                        if (parser.GetValue(out double aValue))
+                        {
+                            a = aValue;
+                        }
+                        break;
+                    case "b":
+                        if (parser.GetValue(out double bValue))
+                        {
+                            b = bValue;
+                        }
+                        break;
+                    case "n":
+                        if (parser.GetValue(out int nValue))
+                        {
+                            n = nValue;
+                        }
+                        break;
+                    case "k":
+                        if (parser.GetValue(out int kValue))
+                        {
+                            k = kValue;
+                        }
+                        break;
+                }
+            }
+
+            if (!a.HasValue || !b.HasValue || !n.HasValue || !k.HasValue)
+            {
+                return false;
+            }
+
+            InitInternal(a.Value, b.Value, n.Value, k.Value);
+            return true;
         }
 
         public bool Save(TextWriter writer, string path, string varName)
         {
-            throw new NotImplementedException();
+            if (writer == null)
+            {
+                return false;
+            }
+
+            var parser = new SimpleParser("BSTools.Save", writer: writer);
+            if (!parser.SetPath(path, varName))
+            {
+                return false;
+            }
+
+            parser.Write("a", A);
+            parser.Write("b", B);
+            parser.Write("n", N);
+            parser.Write("k", K);
+            return true;
         }
 
         public double GetLowerBoundary() => A;
@@ -533,7 +602,7 @@ namespace BSpline.Core
             return T[index + K / 2 - 1];
         }
 
-        protected enum Position
+        internal enum Position
         {
             Ober,
             Mitte,
@@ -581,12 +650,28 @@ namespace BSpline.Core
 
         protected void ErrorMsg(string file, string function, string message, double errno)
         {
-            throw new NotImplementedException();
+            var fullMessage = $"{file}:{function}: {message}: {errno}";
+            Console.Error.WriteLine(fullMessage);
         }
 
         protected int Check(string proc)
         {
-            throw new NotImplementedException();
+            if (K == 0 || K > MaxK)
+            {
+                return 1;
+            }
+
+            if (N == 0 || N > MaxN)
+            {
+                return 1;
+            }
+
+            if (A > B)
+            {
+                return 1;
+            }
+
+            return 0;
         }
 
         protected int GetIntervalIndex(double x)
@@ -1032,7 +1117,30 @@ namespace BSpline.Core
         public XBSTools(int maxInterval, int maxOrder, BSTools input)
             : this(maxInterval, maxOrder)
         {
-            throw new NotImplementedException();
+            if (input == null)
+            {
+                return;
+            }
+
+            Init(input.GetLowerBoundary(), input.GetUpperBoundary(), input.GetNumberOfIntervals(), input.GetOrder());
+        }
+
+        private static string ExtractKey(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                return string.Empty;
+            }
+
+            var equalsIndex = line.IndexOf('=');
+            if (equalsIndex <= 0)
+            {
+                return string.Empty;
+            }
+
+            var left = line.Substring(0, equalsIndex).Trim();
+            var dotIndex = left.LastIndexOf('.');
+            return dotIndex >= 0 ? left.Substring(dotIndex + 1).Trim() : left;
         }
     }
 }
