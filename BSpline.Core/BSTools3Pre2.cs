@@ -754,6 +754,36 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
             return Weights.GetLength();
         }
 
+        public double LowerBoundX()
+        {
+            return X.LowerBoundary;
+        }
+
+        public double UpperBoundX()
+        {
+            return X.UpperBoundary;
+        }
+
+        public double LowerBoundY()
+        {
+            return Y.LowerBoundary;
+        }
+
+        public double UpperBoundY()
+        {
+            return Y.UpperBoundary;
+        }
+
+        public double LowerBoundZ()
+        {
+            return Z.LowerBoundary;
+        }
+
+        public double UpperBoundZ()
+        {
+            return Z.UpperBoundary;
+        }
+
         public int GetWeightPosition(int index, out double x, out double y, out double z)
         {
             if (Weights.GetLength() <= index)

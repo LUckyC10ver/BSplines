@@ -614,6 +614,16 @@ public sealed class XBSTools1Data<TInterval, TOrder>
             return true;
         }
 
+        public double LowerBound()
+        {
+            return X.LowerBoundary;
+        }
+
+        public double UpperBound()
+        {
+            return X.UpperBoundary;
+        }
+
         public abstract double CalcWeightedNormOfBend(double weightsDirection = 1);
 
         public double CalcNormP(int p)
