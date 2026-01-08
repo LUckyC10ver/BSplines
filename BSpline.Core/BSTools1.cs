@@ -1132,27 +1132,27 @@ public sealed class XBSTools1Data<TInterval, TOrder>
                 switch (key)
                 {
                     case "lTp_x":
-                        if (simpleParser.GetValue(out int lValue))
+                        if (simpleParser.GetValue(out int lValueX))
                         {
-                            lTpX = lValue;
+                            lTpX = lValueX;
                         }
                         break;
                     case "uTp_x":
-                        if (simpleParser.GetValue(out int uValue))
+                        if (simpleParser.GetValue(out int uValueX))
                         {
-                            uTpX = uValue;
+                            uTpX = uValueX;
                         }
                         break;
                     case "lTp_y":
-                        if (simpleParser.GetValue(out int lValue))
+                        if (simpleParser.GetValue(out int lValueY))
                         {
-                            lTpY = lValue;
+                            lTpY = lValueY;
                         }
                         break;
                     case "uTp_y":
-                        if (simpleParser.GetValue(out int uValue))
+                        if (simpleParser.GetValue(out int uValueY))
                         {
-                            uTpY = uValue;
+                            uTpY = uValueY;
                         }
                         break;
                     case "w":
@@ -1612,6 +1612,50 @@ public sealed class XBSTools1Data<TInterval, TOrder>
         public double[] GetWeightsBuffer()
         {
             return Weights.GetBuffer();
+        }
+
+        public int GetBinaryData<TIntervalX, TIntervalY, TOrderX, TOrderY>(XBSTools2Data<TIntervalX, TIntervalY, TOrderX, TOrderY> data)
+            where TIntervalX : struct
+            where TIntervalY : struct
+            where TOrderX : struct
+            where TOrderY : struct
+        {
+            if (data == null)
+            {
+                return 0;
+            }
+
+            data.SetCarrierX(X);
+            data.SetCarrierY(Y);
+            data.SetOrderOfLowerTaylorPolynomialX(LTpX);
+            data.SetOrderOfUpperTaylorPolynomialX(UTpX);
+            data.SetOrderOfLowerTaylorPolynomialY(LTpY);
+            data.SetOrderOfUpperTaylorPolynomialY(UTpY);
+            data.SetWeights(Weights.GetLength(), Weights.GetBuffer());
+            return 1;
+        }
+
+        public int SetBinaryData<TIntervalX, TIntervalY, TOrderX, TOrderY>(XBSTools2Data<TIntervalX, TIntervalY, TOrderX, TOrderY> data)
+            where TIntervalX : struct
+            where TIntervalY : struct
+            where TOrderX : struct
+            where TOrderY : struct
+        {
+            if (data == null)
+            {
+                return 0;
+            }
+
+            data.GetCarrierX(X);
+            data.GetCarrierY(Y);
+            LTpX = data.GetOrderOfLowerTaylorPolynomialX();
+            UTpX = data.GetOrderOfUpperTaylorPolynomialX();
+            LTpY = data.GetOrderOfLowerTaylorPolynomialY();
+            UTpY = data.GetOrderOfUpperTaylorPolynomialY();
+            var weights = data.GetWeights();
+            Array.Copy(weights, Weights.GetBuffer(), Math.Min(weights.Length, Weights.GetLength()));
+            CompleteIt();
+            return 1;
         }
 
         public BSTools GetCarrierY()

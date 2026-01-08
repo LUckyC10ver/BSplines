@@ -829,6 +829,62 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
             return 0;
         }
 
+        public int GetBinaryData<TIntervalX, TIntervalY, TIntervalZ, TOrderX, TOrderY, TOrderZ>(
+            XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, TOrderY, TOrderZ> data)
+            where TIntervalX : struct
+            where TIntervalY : struct
+            where TIntervalZ : struct
+            where TOrderX : struct
+            where TOrderY : struct
+            where TOrderZ : struct
+        {
+            if (data == null)
+            {
+                return 0;
+            }
+
+            data.SetCarrierX(X);
+            data.SetCarrierY(Y);
+            data.SetCarrierZ(Z);
+            data.SetOrderOfLowerTaylorPolynomialX(LTpX);
+            data.SetOrderOfUpperTaylorPolynomialX(UTpX);
+            data.SetOrderOfLowerTaylorPolynomialY(LTpY);
+            data.SetOrderOfUpperTaylorPolynomialY(UTpY);
+            data.SetOrderOfLowerTaylorPolynomialZ(LTpZ);
+            data.SetOrderOfUpperTaylorPolynomialZ(UTpZ);
+            data.SetWeights(Weights.GetLength(), Weights.GetBuffer());
+            return 1;
+        }
+
+        public int SetBinaryData<TIntervalX, TIntervalY, TIntervalZ, TOrderX, TOrderY, TOrderZ>(
+            XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, TOrderY, TOrderZ> data)
+            where TIntervalX : struct
+            where TIntervalY : struct
+            where TIntervalZ : struct
+            where TOrderX : struct
+            where TOrderY : struct
+            where TOrderZ : struct
+        {
+            if (data == null)
+            {
+                return 0;
+            }
+
+            data.GetCarrierX(X);
+            data.GetCarrierY(Y);
+            data.GetCarrierZ(Z);
+            LTpX = data.GetOrderOfLowerTaylorPolynomialX();
+            UTpX = data.GetOrderOfUpperTaylorPolynomialX();
+            LTpY = data.GetOrderOfLowerTaylorPolynomialY();
+            UTpY = data.GetOrderOfUpperTaylorPolynomialY();
+            LTpZ = data.GetOrderOfLowerTaylorPolynomialZ();
+            UTpZ = data.GetOrderOfUpperTaylorPolynomialZ();
+            var weights = data.GetWeights();
+            Array.Copy(weights, Weights.GetBuffer(), Math.Min(weights.Length, Weights.GetLength()));
+            CompleteIt();
+            return 1;
+        }
+
         public void SetWeight(int index, double value)
         {
             Weights.SetWeight(index, value);
@@ -980,5 +1036,4 @@ public sealed class XBSTools3Data<TIntervalX, TIntervalY, TIntervalZ, TOrderX, T
             return this;
         }
     }
-}
 }
