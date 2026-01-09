@@ -2,7 +2,7 @@ using System;
 
 namespace BSpline.Core
 {
-    public sealed class BCEquidistantBSpline3
+    public sealed class EquidistantBSpline3
     {
         private readonly int _maxIntervalsX;
         private readonly int _maxIntervalsY;
@@ -12,7 +12,7 @@ namespace BSpline.Core
         private readonly int _maxOrderZ;
         private readonly XBSTools3Pre2<int, int, int, int, int, int> _bspline;
 
-        public BCEquidistantBSpline3(int maxIntervalsX, int maxIntervalsY, int maxIntervalsZ, int maxOrderX, int maxOrderY, int maxOrderZ)
+        public EquidistantBSpline3(int maxIntervalsX, int maxIntervalsY, int maxIntervalsZ, int maxOrderX, int maxOrderY, int maxOrderZ)
         {
             _maxIntervalsX = maxIntervalsX;
             _maxIntervalsY = maxIntervalsY;
@@ -21,15 +21,15 @@ namespace BSpline.Core
             _maxOrderY = maxOrderY;
             _maxOrderZ = maxOrderZ;
             _bspline = new XBSTools3Pre2<int, int, int, int, int, int>(maxIntervalsX, maxIntervalsY, maxIntervalsZ, maxOrderX, maxOrderY, maxOrderZ);
-            BCEquidistantBSpline.Assert(maxOrderX <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
+            EquidistantBSpline.Assert(maxOrderX <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
                 "Maximal order of B-splines in x-direction too large.");
-            BCEquidistantBSpline.Assert(maxOrderY <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
+            EquidistantBSpline.Assert(maxOrderY <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
                 "Maximal order of B-splines in y-direction too large.");
-            BCEquidistantBSpline.Assert(maxOrderZ <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
+            EquidistantBSpline.Assert(maxOrderZ <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
                 "Maximal order of B-splines in z-direction too large.");
         }
 
-        public string ClassName => "BCEquidistantBSpline3";
+        public string ClassName => "EquidistantBSpline3";
 
         public int GetMaxIntervalsX() => _maxIntervalsX;
 
@@ -99,7 +99,7 @@ namespace BSpline.Core
             _bspline.GetBinaryData(data);
         }
 
-        public bool IsStaticDataEqual(BCEquidistantBSpline3 other)
+        public bool IsStaticDataEqual(EquidistantBSpline3 other)
         {
             return _bspline.IsStaticDataEqual(other.GetXBSTools());
         }
@@ -139,7 +139,7 @@ namespace BSpline.Core
             return _bspline.Load(filename);
         }
 
-        public BCEquidistantBSpline3 DerivativeX()
+        public EquidistantBSpline3 DerivativeX()
         {
             _bspline.DiffX();
             return this;

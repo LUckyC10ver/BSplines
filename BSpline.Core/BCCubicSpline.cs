@@ -3,31 +3,31 @@ using System.Collections.Generic;
 
 namespace BSpline.Core
 {
-    public sealed class BCCubicSpline : BCSpline
+    public sealed class CubicSpline : Spline
     {
         private readonly List<double> _d2y = new List<double>();
 
-        public BCCubicSpline()
+        public CubicSpline()
         {
         }
 
-        public BCCubicSpline(IList<double> xValues, IList<double> yValues, bool sorted = false, double dyLeft = 1e30, double dyRight = 1e30)
+        public CubicSpline(IList<double> xValues, IList<double> yValues, bool sorted = false, double dyLeft = 1e30, double dyRight = 1e30)
         {
             Init(xValues, yValues, sorted, dyLeft, dyRight);
         }
 
-        public string ClassName => "BCCubicSpline";
+        public string ClassName => "CubicSpline";
 
         public void Init(IList<double> xValues, IList<double> yValues, bool sorted = false, double dyLeft = 1e30, double dyRight = 1e30)
         {
             if (xValues == null || yValues == null)
             {
-                BCException.Throw("BCCubicSpline.Init: values are null");
+                throw new Exception("CubicSpline.Init: values are null");
             }
 
             if (xValues.Count != yValues.Count)
             {
-                BCException.Throw("BCCubicSpline.Init: vector sizes differ");
+                throw new Exception("CubicSpline.Init: vector sizes differ");
             }
 
             SetPoints(xValues, yValues, sorted);
@@ -35,7 +35,7 @@ namespace BSpline.Core
             var n = GetXValues().Count;
             if (n < 2)
             {
-                BCException.Throw("BCCubicSpline.Init: at least two points required");
+                throw new Exception("CubicSpline.Init: at least two points required");
             }
 
             _d2y.Clear();
@@ -96,7 +96,7 @@ namespace BSpline.Core
             var n = xValues.Count;
             if (n < 2)
             {
-                BCException.Throw("BCCubicSpline.Evaluate: values not initialized");
+                throw new Exception("CubicSpline.Evaluate: values not initialized");
             }
 
             var klo = 0;
@@ -134,7 +134,7 @@ namespace BSpline.Core
             var n = xValues.Count;
             if (n < 2)
             {
-                BCException.Throw("BCCubicSpline.GetDerivative: values not initialized");
+                throw new Exception("CubicSpline.GetDerivative: values not initialized");
             }
 
             var klo = 0;
@@ -172,7 +172,7 @@ namespace BSpline.Core
             var n = xValues.Count;
             if (n < 2)
             {
-                BCException.Throw("BCCubicSpline.GetSecondDerivative: values not initialized");
+                throw new Exception("CubicSpline.GetSecondDerivative: values not initialized");
             }
 
             var klo = 0;
@@ -207,7 +207,7 @@ namespace BSpline.Core
             var n = xValues.Count;
             if (n < 2)
             {
-                BCException.Throw("BCCubicSpline.GetThirdDerivative: values not initialized");
+                throw new Exception("CubicSpline.GetThirdDerivative: values not initialized");
             }
 
             var klo = 0;

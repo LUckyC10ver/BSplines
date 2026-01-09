@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BSpline.Core
 {
-    public sealed class BCGaussLobattoSpline
+    public sealed class GaussLobattoSpline
     {
         private const double Pi = Math.PI;
 
@@ -12,20 +12,20 @@ namespace BSpline.Core
         private double _xmax;
         private int _mode;
 
-        public BCGaussLobattoSpline(int mode = -1)
+        public GaussLobattoSpline(int mode = -1)
         {
             _xmin = 0.0;
             _xmax = 0.0;
             _mode = mode > -1 ? mode : 0;
         }
 
-        public BCGaussLobattoSpline(IList<double> xValues, IList<double> yValues, bool sorted = false, int mode = -1)
+        public GaussLobattoSpline(IList<double> xValues, IList<double> yValues, bool sorted = false, int mode = -1)
         {
             _mode = mode > -1 ? mode : 0;
             Init(xValues, yValues, sorted, mode);
         }
 
-        public string ClassName => "BCGaussLobattoSpline";
+        public string ClassName => "GaussLobattoSpline";
 
         public bool Empty()
         {
@@ -71,7 +71,7 @@ namespace BSpline.Core
         {
             if (_data.Count < 2)
             {
-                BCException.Throw("BCGaussLobattoSpline.Evaluate: value size less than 2");
+                throw new Exception("GaussLobattoSpline.Evaluate: value size less than 2");
             }
 
             var index = (int)IndexOfX(x);
@@ -95,17 +95,17 @@ namespace BSpline.Core
         {
             if (a < _xmin || a > _xmax)
             {
-                BCException.Throw($"BCGaussLobattoSpline.GetIntegral: input value a={a} out of range [{_xmin},{_xmax}]");
+                throw new Exception($"GaussLobattoSpline.GetIntegral: input value a={a} out of range [{_xmin},{_xmax}]");
             }
 
             if (b < _xmin || b > _xmax)
             {
-                BCException.Throw($"BCGaussLobattoSpline.GetIntegral: input value b={b} out of range [{_xmin},{_xmax}]");
+                throw new Exception($"GaussLobattoSpline.GetIntegral: input value b={b} out of range [{_xmin},{_xmax}]");
             }
 
             if (_data.Count < 2)
             {
-                BCException.Throw("BCGaussLobattoSpline.GetIntegral: value size less than 2");
+                throw new Exception("GaussLobattoSpline.GetIntegral: value size less than 2");
             }
 
             var sign = 1.0;
@@ -154,12 +154,12 @@ namespace BSpline.Core
         {
             if (xmin > xmax)
             {
-                BCException.Throw($"BCGaussLobattoSpline.Init: invalid range [xmin,xmax]=[{xmin},{xmax}]");
+                throw new Exception($"GaussLobattoSpline.Init: invalid range [xmin,xmax]=[{xmin},{xmax}]");
             }
 
             if (newSize < 1)
             {
-                BCException.Throw($"BCGaussLobattoSpline.Init: invalid size={newSize}");
+                throw new Exception($"GaussLobattoSpline.Init: invalid size={newSize}");
             }
 
             if (mode > -1)
@@ -180,12 +180,12 @@ namespace BSpline.Core
         {
             if (xValues == null || yValues == null)
             {
-                BCException.Throw("BCGaussLobattoSpline.Init: values are null");
+                throw new Exception("GaussLobattoSpline.Init: values are null");
             }
 
             if (xValues.Count != yValues.Count)
             {
-                BCException.Throw("BCGaussLobattoSpline.Init: vector sizes differ");
+                throw new Exception("GaussLobattoSpline.Init: vector sizes differ");
             }
 
             if (mode > -1)
@@ -238,7 +238,7 @@ namespace BSpline.Core
         {
             if (newSize < 1)
             {
-                BCException.Throw($"BCGaussLobattoSpline.Resize: invalid size={newSize}");
+                throw new Exception($"GaussLobattoSpline.Resize: invalid size={newSize}");
             }
 
             while (_data.Count < newSize)
@@ -331,7 +331,7 @@ namespace BSpline.Core
         {
             if (value < min || value > max)
             {
-                BCException.Throw($"BCGaussLobattoSpline: {label} out of range");
+                throw new Exception($"GaussLobattoSpline: {label} out of range");
             }
         }
     }

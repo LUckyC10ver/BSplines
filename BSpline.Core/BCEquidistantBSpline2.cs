@@ -2,7 +2,7 @@ using System;
 
 namespace BSpline.Core
 {
-    public sealed class BCEquidistantBSpline2
+    public sealed class EquidistantBSpline2
     {
         private readonly int _maxIntervalsX;
         private readonly int _maxIntervalsY;
@@ -10,20 +10,20 @@ namespace BSpline.Core
         private readonly int _maxOrderY;
         private readonly XBSTools2<int, int, int, int> _bspline;
 
-        public BCEquidistantBSpline2(int maxIntervalsX, int maxIntervalsY, int maxOrderX, int maxOrderY)
+        public EquidistantBSpline2(int maxIntervalsX, int maxIntervalsY, int maxOrderX, int maxOrderY)
         {
             _maxIntervalsX = maxIntervalsX;
             _maxIntervalsY = maxIntervalsY;
             _maxOrderX = maxOrderX;
             _maxOrderY = maxOrderY;
             _bspline = new XBSTools2<int, int, int, int>(maxIntervalsX, maxIntervalsY, maxOrderX, maxOrderY);
-            BCEquidistantBSpline.Assert(maxOrderX <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
+            EquidistantBSpline.Assert(maxOrderX <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
                 "Maximal order of B-splines in x-direction too large.");
-            BCEquidistantBSpline.Assert(maxOrderY <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
+            EquidistantBSpline.Assert(maxOrderY <= BSToolsConstants.BSTOOLS_TOTAL_MAX_ORDER,
                 "Maximal order of B-splines in y-direction too large.");
         }
 
-        public string ClassName => "BCEquidistantBSpline2";
+        public string ClassName => "EquidistantBSpline2";
 
         public int GetMaxIntervalsX() => _maxIntervalsX;
 
@@ -70,7 +70,7 @@ namespace BSpline.Core
             _bspline.GetBinaryData(data);
         }
 
-        public bool IsStaticDataEqual(BCEquidistantBSpline2 other)
+        public bool IsStaticDataEqual(EquidistantBSpline2 other)
         {
             return _bspline.IsStaticDataEqual(other.GetXBSTools());
         }
@@ -105,13 +105,13 @@ namespace BSpline.Core
             return _bspline.Load(filename);
         }
 
-        public BCEquidistantBSpline2 DerivativeX()
+        public EquidistantBSpline2 DerivativeX()
         {
             _bspline.DiffX();
             return this;
         }
 
-        public BCEquidistantBSpline2 DerivativeY()
+        public EquidistantBSpline2 DerivativeY()
         {
             _bspline.DiffY();
             return this;

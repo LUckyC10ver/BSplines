@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BSpline.Core
 {
-    public sealed class BCEquidistantCenterLinearSpline
+    public sealed class EquidistantCenterLinearSpline
     {
         private const double EpsilonScale = 1e-11;
 
@@ -13,7 +13,7 @@ namespace BSpline.Core
         private double _dx;
         private double _epsilon;
 
-        public BCEquidistantCenterLinearSpline()
+        public EquidistantCenterLinearSpline()
         {
             _xmin = 0.0;
             _xmax = 0.0;
@@ -21,12 +21,12 @@ namespace BSpline.Core
             _epsilon = EpsilonScale;
         }
 
-        public BCEquidistantCenterLinearSpline(IList<double> xValues, IList<double> yValues, bool sorted = false)
+        public EquidistantCenterLinearSpline(IList<double> xValues, IList<double> yValues, bool sorted = false)
         {
             Init(xValues, yValues, sorted);
         }
 
-        public string ClassName => "BCEquidistantCenterLinearSpline";
+        public string ClassName => "EquidistantCenterLinearSpline";
 
         public bool Empty()
         {
@@ -62,12 +62,12 @@ namespace BSpline.Core
         {
             if (_data.Count < 2)
             {
-                BCException.Throw("BCEquidistantCenterLinearSpline.Evaluate: value size less than 2");
+                throw new Exception("EquidistantCenterLinearSpline.Evaluate: value size less than 2");
             }
 
             if (x < _xmin - _epsilon || x > _xmax + _epsilon)
             {
-                BCException.Throw($"BCEquidistantCenterLinearSpline.Evaluate: input value {x} out of range [{_xmin},{_xmax}]");
+                throw new Exception($"EquidistantCenterLinearSpline.Evaluate: input value {x} out of range [{_xmin},{_xmax}]");
             }
 
             var index = (int)((x - _xmin - _dx / 2.0) / _dx);
@@ -114,17 +114,17 @@ namespace BSpline.Core
         {
             if (a < _xmin || a > _xmax)
             {
-                BCException.Throw($"BCEquidistantCenterLinearSpline.GetIntegral: input value a={a} out of range [{_xmin},{_xmax}]");
+                throw new Exception($"EquidistantCenterLinearSpline.GetIntegral: input value a={a} out of range [{_xmin},{_xmax}]");
             }
 
             if (b < _xmin || b > _xmax)
             {
-                BCException.Throw($"BCEquidistantCenterLinearSpline.GetIntegral: input value b={b} out of range [{_xmin},{_xmax}]");
+                throw new Exception($"EquidistantCenterLinearSpline.GetIntegral: input value b={b} out of range [{_xmin},{_xmax}]");
             }
 
             if (_data.Count < 2)
             {
-                BCException.Throw("BCEquidistantCenterLinearSpline.GetIntegral: value size less than 2");
+                throw new Exception("EquidistantCenterLinearSpline.GetIntegral: value size less than 2");
             }
 
             var sign = 1.0;
@@ -191,12 +191,12 @@ namespace BSpline.Core
         {
             if (xValues == null || yValues == null)
             {
-                BCException.Throw("BCEquidistantCenterLinearSpline.Init: values are null");
+                throw new Exception("EquidistantCenterLinearSpline.Init: values are null");
             }
 
             if (xValues.Count != yValues.Count)
             {
-                BCException.Throw("BCEquidistantCenterLinearSpline.Init: vector sizes differ");
+                throw new Exception("EquidistantCenterLinearSpline.Init: vector sizes differ");
             }
 
             var x = new List<double>(xValues);
@@ -208,7 +208,7 @@ namespace BSpline.Core
 
             if (!CheckEquidistance(x))
             {
-                BCException.Throw("BCEquidistantCenterLinearSpline.Init: x values not equidistant");
+                throw new Exception("EquidistantCenterLinearSpline.Init: x values not equidistant");
             }
 
             _xmin = x[0];
@@ -226,12 +226,12 @@ namespace BSpline.Core
         {
             if (xmin > xmax)
             {
-                BCException.Throw($"BCEquidistantCenterLinearSpline.Init: invalid range [xmin,xmax]=[{xmin},{xmax}]");
+                throw new Exception($"EquidistantCenterLinearSpline.Init: invalid range [xmin,xmax]=[{xmin},{xmax}]");
             }
 
             if (newSize < 1)
             {
-                BCException.Throw($"BCEquidistantCenterLinearSpline.Init: invalid size={newSize}");
+                throw new Exception($"EquidistantCenterLinearSpline.Init: invalid size={newSize}");
             }
 
             _xmin = xmin;
@@ -250,7 +250,7 @@ namespace BSpline.Core
         {
             if (newSize < 1)
             {
-                BCException.Throw($"BCEquidistantCenterLinearSpline.Resize: invalid size={newSize}");
+                throw new Exception($"EquidistantCenterLinearSpline.Resize: invalid size={newSize}");
             }
 
             while (_data.Count < newSize)

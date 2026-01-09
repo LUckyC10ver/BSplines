@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BSpline.Core
 {
-    public class BCSpline
+    public class Spline
     {
         private const double EpsilonScale = 1e-11;
 
@@ -12,21 +12,21 @@ namespace BSpline.Core
         private readonly List<double> _yValues = new List<double>();
         private double _epsilon = EpsilonScale;
 
-        public BCSpline()
+        public Spline()
         {
         }
 
-        public BCSpline(IList<double> points, double value = 0.0, bool sorted = false)
+        public Spline(IList<double> points, double value = 0.0, bool sorted = false)
         {
             Init(points, value, sorted);
         }
 
-        public BCSpline(IList<double> points, IList<double> values, bool sorted = false)
+        public Spline(IList<double> points, IList<double> values, bool sorted = false)
         {
             Init(points, values, sorted);
         }
 
-        public string ClassName => "BCSpline";
+        public string ClassName => "Spline";
 
         public IReadOnlyList<double> GetXValues()
         {
@@ -41,6 +41,16 @@ namespace BSpline.Core
         public List<double> GetYValuesMutable()
         {
             return _yValues;
+        }
+
+        public double this[int index]
+        {
+            get => _yValues[index];
+            set
+            {
+                _yValues[index] = value;
+                SetChanged();
+            }
         }
 
         public int Size()
@@ -67,7 +77,7 @@ namespace BSpline.Core
         {
             if (_xValues.Count == 0)
             {
-                BCException.Throw("BCSpline.XMin(): Range not set");
+                throw new Exception("Spline.XMin(): Range not set");
             }
 
             return _xValues[0];
@@ -77,7 +87,7 @@ namespace BSpline.Core
         {
             if (_xValues.Count == 0)
             {
-                BCException.Throw("BCSpline.XMax(): Range not set");
+                throw new Exception("Spline.XMax(): Range not set");
             }
 
             return _xValues[_xValues.Count - 1];
@@ -113,7 +123,7 @@ namespace BSpline.Core
         {
             if (points == null)
             {
-                BCException.Throw("BCSpline.Init(points): points is null");
+                throw new Exception("Spline.Init(points): points is null");
             }
 
             _xValues.Clear();
@@ -137,12 +147,12 @@ namespace BSpline.Core
         {
             if (points == null || values == null)
             {
-                BCException.Throw("BCSpline.Init(points,values): points or values is null");
+                throw new Exception("Spline.Init(points,values): points or values is null");
             }
 
             if (points.Count != values.Count)
             {
-                BCException.Throw("BCSpline.Init(points,values): vector sizes differ");
+                throw new Exception("Spline.Init(points,values): vector sizes differ");
             }
 
             _xValues.Clear();
@@ -173,12 +183,12 @@ namespace BSpline.Core
         {
             if (values == null)
             {
-                BCException.Throw("BCSpline.SetValues: values is null");
+                throw new Exception("Spline.SetValues: values is null");
             }
 
             if (_yValues.Count != values.Count)
             {
-                BCException.Throw("BCSpline.SetValues: vector sizes differ");
+                throw new Exception("Spline.SetValues: vector sizes differ");
             }
 
             _yValues.Clear();

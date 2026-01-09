@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace BSpline.Core
 {
-    public sealed class BCLinearSpline : BCSpline
+    public sealed class LinearSpline : Spline
     {
-        public BCLinearSpline()
+        public LinearSpline()
         {
         }
 
-        public BCLinearSpline(IList<double> points, IList<double> values, bool sorted = false)
+        public LinearSpline(IList<double> points, IList<double> values, bool sorted = false)
             : base(points, values, sorted)
         {
         }
 
-        public string ClassName => "BCLinearSpline";
+        public string ClassName => "LinearSpline";
 
         public double Evaluate(double argument)
         {
@@ -22,7 +22,7 @@ namespace BSpline.Core
             var yValues = GetYValues();
             if (xValues.Count == 0 || yValues.Count == 0)
             {
-                BCException.Throw("BCLinearSpline.Evaluate: values not initialized");
+                throw new Exception("LinearSpline.Evaluate: values not initialized");
             }
 
             var n = IndexFromValue(argument);
@@ -42,7 +42,7 @@ namespace BSpline.Core
                 return (yValues[n] + yValues[n + 1]) / 2.0;
             }
 
-            BCException.Throw("BCLinearSpline.Evaluate: argument out of range");
+            throw new Exception("LinearSpline.Evaluate: argument out of range");
             return 0.0;
         }
     }

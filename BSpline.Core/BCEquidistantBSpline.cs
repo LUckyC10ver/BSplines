@@ -1,12 +1,14 @@
+using System;
+
 namespace BSpline.Core
 {
-    public static class BCEquidistantBSpline
+    public static class EquidistantBSpline
     {
         public static void Assert(bool condition, string message)
         {
             if (!condition)
             {
-                BCException.Throw(message);
+                throw new Exception(message);
             }
         }
     }

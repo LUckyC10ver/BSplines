@@ -18,9 +18,9 @@ namespace BSpline.Test
             try
             {
                 Console.WriteLine("--- Create B-spline functions.");
-                var bcbspline1 = new BCEquidistantBSpline1(MaxIntervalsX, MaxOrderX);
+                var bcbspline1 = new EquidistantBSpline1(MaxIntervalsX, MaxOrderX);
                 var bspline1 = new XBSTools1<int, int>(MaxIntervalsX, MaxOrderX);
-                var bcbspline3 = new BCEquidistantBSpline3(MaxIntervalsZ, MaxIntervalsZ, MaxIntervalsZ, MaxOrderX, MaxOrderY, MaxOrderZ);
+                var bcbspline3 = new EquidistantBSpline3(MaxIntervalsZ, MaxIntervalsZ, MaxIntervalsZ, MaxOrderX, MaxOrderY, MaxOrderZ);
                 var bspline3 = new XBSTools3Pre2<int, int, int, int, int, int>(MaxIntervalsZ, MaxIntervalsZ, MaxIntervalsZ, MaxOrderX, MaxOrderY, MaxOrderZ);
 
                 Console.WriteLine("\n------- Fill B-spline functions.");
@@ -63,7 +63,7 @@ namespace BSpline.Test
             return sum * sum;
         }
 
-        private static void BuildBSpline1(BCEquidistantBSpline1 bcbspline, XBSTools1<int, int> bspline)
+        private static void BuildBSpline1(EquidistantBSpline1 bcbspline, XBSTools1<int, int> bspline)
         {
             Console.WriteLine("--- Initialize 1-dimensional B-spline functions:");
             Console.WriteLine("    x-working area = [{0}, {1}], {2} subintervals, order = {3}.", -1.0, 2.0, 30, 4);
@@ -95,7 +95,7 @@ namespace BSpline.Test
             Console.WriteLine("--- Save is not implemented in the managed port; skipping.");
         }
 
-        private static void BuildBSpline3(BCEquidistantBSpline3 bcbspline, XBSTools3Pre2<int, int, int, int, int, int> bspline)
+        private static void BuildBSpline3(EquidistantBSpline3 bcbspline, XBSTools3Pre2<int, int, int, int, int, int> bspline)
         {
             Console.WriteLine("--- Initialize 3-dimensional B-spline functions:");
 
@@ -138,7 +138,7 @@ namespace BSpline.Test
             Console.WriteLine("--- Save is not implemented in the managed port; skipping.");
         }
 
-        private static void EvalBSpline1(BCEquidistantBSpline1 bcbspline, XBSTools1<int, int> bspline)
+        private static void EvalBSpline1(EquidistantBSpline1 bcbspline, XBSTools1<int, int> bspline)
         {
             const int n = 10;
             var x = new[] { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
@@ -181,7 +181,7 @@ namespace BSpline.Test
             Console.WriteLine("--- 2-dimensional evaluation skipped: BSTools2 is not implemented in this port.");
         }
 
-        private static void EvalBSpline3(BCEquidistantBSpline3 bcbspline, XBSTools3Pre2<int, int, int, int, int, int> bspline)
+        private static void EvalBSpline3(EquidistantBSpline3 bcbspline, XBSTools3Pre2<int, int, int, int, int, int> bspline)
         {
             Console.WriteLine("--- Scalar evaluations of 3-dimensional B-spline function.");
             var f = bcbspline.Evaluate(2.0, 1.0, 0.5);
@@ -241,17 +241,17 @@ namespace BSpline.Test
             Console.WriteLine("    Upper boundary                 in z-direction: {0}", bcbspline.GetUpperBoundaryZ());
         }
 
-        private static void TrafoBSpline1(BCEquidistantBSpline1 bcbspline, XBSTools1<int, int> bspline)
+        private static void TrafoBSpline1(EquidistantBSpline1 bcbspline, XBSTools1<int, int> bspline)
         {
             Console.WriteLine("--- Replace 1-dim. B-spline function with its derivative.");
-            var dbcbspline = new BCEquidistantBSpline1(MaxIntervalsX, MaxOrderX);
+            var dbcbspline = new EquidistantBSpline1(MaxIntervalsX, MaxOrderX);
             var dbspline = new XBSTools1<int, int>(MaxIntervalsX, MaxOrderX);
             CopySpline1(bspline, dbcbspline, dbspline);
             dbcbspline.Derivative();
             dbspline.Diff();
 
             Console.WriteLine("--- Replace 1-dim. B-spline function with its antiderivative.");
-            var ibcbspline = new BCEquidistantBSpline1(MaxIntervalsX, MaxOrderX);
+            var ibcbspline = new EquidistantBSpline1(MaxIntervalsX, MaxOrderX);
             var ibspline = new XBSTools1<int, int>(MaxIntervalsX, MaxOrderX);
             CopySpline1(bspline, ibcbspline, ibspline);
             ibcbspline.AntiDerivative(0.0, 1.0);
@@ -277,7 +277,7 @@ namespace BSpline.Test
 
         private static void CopySpline1(
             XBSTools1<int, int> source,
-            BCEquidistantBSpline1 destWrapper,
+            EquidistantBSpline1 destWrapper,
             XBSTools1<int, int> dest)
         {
             destWrapper.SetCarrier(source.LowerBound(), source.UpperBound(), source.GetNumberOfIntervals(), source.GetOrder());
